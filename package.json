@@ -23,5 +23,26 @@
   "bugs": {
     "url": "https://github.com/mevius6/rodchenkoart.school/issues"
   },
-  "homepage": "https://github.com/mevius6/rodchenkoart.school#readme"
+  "homepage": "https://github.com/mevius6/rodchenkoart.school#readme",
+  "devDependencies": {
+    "eslint": "^8.0.1",
+    "parcel": "^2.0.0-rc.0",
+    "postcss": "^8.3.9",
+    "postcss-preset-env": "^6.7.0",
+    "pug": "^3.0.2",
+    "sass": "^1.43.2",
+    "stylelint": "^13.13.1",
+    "stylelint-order": "^4.1.0"
+  },
+  "dependencies": {
+    "gsap": "^3.8.0",
+    "lodash.throttle": "^4.1.1"
+  },
+  "browserslist": [
+    ">0.5%",
+    "last 2 versions",
+    "not ie <= 11",
+    "not dead",
+    "not op_mini all"
+  ]
 }
