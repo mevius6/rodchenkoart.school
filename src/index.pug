@@ -1,0 +1,617 @@
+extends ./pug/page
+
+//- append resource-hint-links
+  each host in hosts
+    link(rel="preconnect" href=`https://${host}` crossorigin)
+    link(rel="dns-prefetch" href=`https://${host}` crossorigin)
+
+block vars
+  -
+    let page = data.pages.index
+  -
+    const count = arr => arr.length
+    const generateNumSeq = num => Array.from({length: num}, (v, i) => i)
+  -
+    const hosts = [
+      'graphql.datocms.com',
+      'stream.mux.com',
+      // 'res.cloudinary.com',
+    ]
+  -
+    const offers = [
+      {
+        'listTitle': 'На курсе вы:',
+        'listItems': [
+          {
+            'text': 'Узнаете основные принципы постановки света в студии',
+            'icon': '➝',
+          }, {
+            'text': 'Получите доступ к пособию с видеопримерами по работе со светом',
+            'icon': '➝',
+          }, {
+            'text': 'Узнаете как собирать референсы для практики со светом',
+            'icon': '➝',
+          }, {
+            'text': 'Научитесь работать со студийным оборудованием',
+            'icon': '➝',
+          }, {
+            'text': 'Начнете применять знания на практике',
+            'icon': '➝',
+          }, {
+            'text': 'Подготовитесь к поступлению на курсы Школы Родченко Фотография в медиа',
+            'icon': '➝',
+          }
+        ]
+      }
+    ]
+  -
+    const about = [
+      {
+        'text': 'Студентам курса предстоит не только работа со светом, но и с образом. Мы уделяем внимание этому вопросу, так как в кадре работает всё вместе: и объект съёмки, и стиль, и сет, и фон. Создание композиции, в которой определены все элементы — важный скил для современного фотографа.',
+        'listTitle': 'На онлайн-курсе мы изучим',
+        'listItems': [
+          {
+            'text': 'Как искать референсы для съёмки',
+            'icon': '➝',
+          }, {
+            'text': 'Как составить профессиональный мудборд',
+            'icon': '➝',
+          }, {
+            'text': 'Как провести кастинг',
+            'icon': '➝',
+          }, {
+            'text': 'Как подготовиться к финальной съёмке курса',
+            'icon': '➝',
+          }, {
+            'text': 'А также поделимся контактами стилистов и визажистов, с которыми можно коллаборировать для съёмок.',
+            'icon': '➝',
+          }
+        ]
+      }, {
+        'text': 'За время обучения учащиеся сдают 3 домашних задания, для двух из которых необходимо арендовать студию или осветительные приборы под съёмку.',
+      }, {
+        'text': 'После каждой съёмки учащийся получает подробный разбор фотографий от преподавателя на онлайн-занятиях. Обратная связь поможет фотографам понять свои ошибки и не допустить их при следующей съемке. Консультации помогут понять, в какую сторону двигаться, чтобы развивать своё видение и навыки в будущем.',
+      }
+    ]
+  -
+    const upskill = [
+      {
+        'text': 'Не ставить схемы, а создавать свет соответствующий содержанию кадра, выражающий состояние героя в кадре.',
+        'icon': '➝',
+      }, {
+        'text': 'Понимать, как свет влияет на восприятие объекта съёмки.',
+        'icon': '➝',
+      }, {
+        'text': 'Различать источники света в референсах.',
+        'icon': '➝',
+      }, {
+        'text': 'Работать над серией фотографий',
+        'icon': '➝',
+      }
+    ]
+  -
+    const program = [
+      {
+        'date': '27 сентября',
+        'listTitle': 'Свет как средство выразительности фотоязыка',
+        'listItems': [
+          {
+            'text': 'Лекция: свет рассматривается как элемент визуального языка фотографии, который формирует настроение кадра и может описать состояние героя. Как технические настройки влияют на выразительность кадра и как можно комбинировать различные техники для формирования собственного уникального подхода к работе с кадром и светом в нем.',
+            'icon': '➝'
+          }, {
+            'text': 'Практика: первое домашнее задание, для которого не требуется студия.',
+            'icon': '➝'
+          }
+        ]
+      }, {
+        'date': '29 сентября',
+        'listTitle': 'Студийное оборудование',
+        'listItems': [
+          {
+            'text': 'Лекция: Виды источников света: постоянный и импульсный свет. Прожекторы и источники рассеянного света. Характер света: мягкий и жёсткий свет. Светопреобразующие насадки для вспышек. Рассеиватели, отражатели и флаги. Съёмка с одним источником света. Ресёрч и подбор референсов для съёмки.',
+            'icon': '➝'
+          }, {
+            'text': 'Практика: Разбор первого ДЗ. Объявление второго ДЗ — сбор референсов по свету для первой студийной съёмки.',
+            'icon': '➝'
+          }
+        ]
+      }, {
+        'date': '1 октября',
+        'listTitle': 'Методика постановки света в студии. Направления света.',
+        'listItems': [
+          {
+            'text': 'Лекция: Рисующий, заполняющий, моделирующий и фоновый свет. Контраст освещения и его влияние на характер изображение. Съёмка с двумя и более источниками света',
+            'icon': '➝'
+          }, {
+            'text': 'Практика: Разбор ДЗ по сбору референсов и первой съёмки в студии.',
+            'icon': '➝'
+          }
+        ]
+      }, {
+        'date': '6 октября',
+        'listTitle': 'Цвет в фотографии',
+        'listItems': [
+          {
+            'text': 'Лекция: Теория цвета. Цветовая температура. Сочетание источников света разной цветности. Цветные фильтры: конверсионные,компенсационные и эффектные. Система сложения цветов.',
+            'icon': '➝'
+          }, {
+            'text': 'Практика: Разбор первой съёмки в студии.',
+            'icon': '➝'
+          }
+        ]
+      }, {
+        'date': '11 октября',
+        'listTitle': 'Свет в предметной фотосъёмке. Подготовительный этап съёмки.',
+        'listItems': [
+          {
+            'text': 'Лекция: выбор освещения для предметной съёмки в зависимости от характера отражения света поверхностью: зеркальное, направленно-рассеянное, диффузное и смешанное. Как освещать объект бликующим светом?',
+            'icon': '➝'
+          }, {
+            'text': 'Подготовительный этап съемки: мудборд, кастинг, локейшн-скаутинг, создание плана и раскадровки съёмки.',
+            'icon': '➝'
+          }, {
+            'text': 'Практика: мудборд, кастинг, локейшн-скаутинг, создание плана и раскадровки съёмки.',
+            'icon': '➝'
+          }
+        ]
+      }, {
+        'date': '13 октября',
+        'title': 'Разбор мудбордов к финальной съёмке',
+      }, {
+        'date': '20 октября',
+        'title': 'Разбор финальной съёмки',
+      }
+    ]
+  -
+    const reviews = [
+      {
+        'rating': '5',
+        'title': 'Всё есть свет, и свет есть всё',
+        'text': [
+          'Раньше мне казалось, что у света нет физичности. Казалось, что он со своей эфемерной природой абсолютно не поддаётся взаимодействию и контролю. Я боялась работать с ним, не понимая его сущности и в то же время являясь заложником штампованных схем, так рьяно рассыпанных в Интернете.',
+          'Лишь спустя годы я испытала свое первое настоящее знакомство со светом, и это случилось на занятиях Ани. Тогда то и произошел тот самый переломный момент в восприятии этой странной до детского восторга эмульсии, поражающей воображение при одном только блике солнца или галогенной лампы. Поворота вспять не было, и я пустилась во все световые волны с головой.',
+          'Курс Ани особенный тем, что во время обучения ученикам не показывают разжёванных приёмов. Всё строится вокруг восприятия физики света, осознания его материальности и развития способности управлять им вне всяческих клише. На занятиях я поняла, что свет по своей природе сильно похож на те же масляные краски или акварель, что им можно действительно рисовать в кадре и что я художник по свету, накладывающий световые мазки поверх циклорамного холста.',
+          'Недаром фотография в переводе означает «светопись»! Думаю, именно курс Ани стал отправной точкой моего неравнодушия к этой неотъемлемой части нашей видимой реальности, где всё есть свет и свет есть всё.'
+        ],
+        'user': {
+          'name': 'Света Максимова',
+          'avatar': '02',
+          'link': 'https://www.instagram.com/thesvetamaximova/',
+        },
+      }, {
+        'rating': '5',
+        'title': 'Мне этот курс дал большой толчок в развитии',
+        'text': [
+          'Мне этот курс дал большой толчок в развитии, в том, чтобы осмыслять свет, как важную часть концепции съемки. Появилось желание экспериментировать со светом, смешивать его, использовать разные источники освещения под конкретные задачи.',
+          'А ещё у меня пропал страх перед техникой. На курсе помимо практики дают подробную инструкцию, где описаны виды света и основная часть оборудования, даются световые схемы, там все очень доступно объясняется, с конкретными примерами, и я не раз прибегала к этой инструкции, когда готовилась к съемкам.',
+          'Преподаватель видит работы студентов объемно, не только со стороны работы со светом, нам помогали соединить многие аспекты фотографии, чтобы она обретала смысл. Много времени уделяется подробному разбору работ, это помогает быстро учиться на ошибках и видеть свои сильные стороны.'
+        ],
+        'user': {
+          'name': 'Виктория Фомина',
+          'avatar': '03',
+          'link': 'https://www.instagram.com/phomeena/',
+        },
+      }, {
+        'rating': '5',
+        'title': 'Хорошая основа и первые шаги для работы со светом',
+        'text': [
+          'Онлайн курс «Просвет» мне показался интересным, мы разбирали материалы и референсы которые были интересны нам. Конечно, единственный минус в том, что курс онлайн. Очень хотелось встречаться очно.',
+          'Ещё мне понравился материал, мы разбирали современный fashion. Достаточно наглядный видео туториал который сделала Анна, с конфигурацией приборов, демонстрацией жёсткого и мягкого света, различных насадок, помог понять световую схему и читать «картинку»',
+          'Хорошая основа и первые шаги для работы со светом и за пределами студии-площадки. А дальше только практика… А еще вспомнил домашние задание, которое было направленно на наблюдательность и на съемку окружающей среды и света в нём.',
+          // 'Повторюсь, что формат онлайн скорее для тех, кому неудобно быть в Москве или по другим причинам. С удовольствием бы посетил ещё раз такой курс офлайн.'
+        ],
+        'user': {
+          'name': 'Шамиль Хасянзанов',
+          'avatar': '04',
+          'link': 'https://www.instagram.com/shamilxasan/',
+        },
+      },
+    ]
+  -
+    const slides1 = [
+      {
+        'title': 'Перформанс Flowgardenz',
+        'field': [{
+          'text': {'Свет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }]
+      },{
+        'title': 'Cпецпроект Flacon Magazine x Avene',
+        'field': [{
+          'text': {'Фотограф': 'Максим Чуркин'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/max_chu/'
+        }, {
+          'text': {'Cвет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }]
+      },{
+        'title': '',
+        'field': [{
+          'text': {'Свет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }, {
+          'text': {'Объекты': 'Катя Старостина'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/rfnzrfnz/'
+        }]
+      },{
+        'title': '',
+        'field': [{
+          'text': {'Свет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }, {
+          'text': {'Герой': 'Карина Казарян'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/kptransmission/'
+        }, {
+          'text': {'Одежда': 'Nensi Avetisyan'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/avetisyanch/'
+        }]
+      },{
+        'title': 'Cпецпроект Flacon Magazine x Avene',
+        'field': [{
+          'text': {'Фотограф': 'Катя Янова'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/nichaykat/'
+        }, {
+          'text': {'Cвет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }]
+      },{
+        'title': 'Ultramary',
+        'field': [{
+          'text': {'Камера': 'Артём Го'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/temagoal/'
+        }, {
+          'text': {'Cвет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }]
+      },{
+        'title': 'Спецпроект Flacon Magazine',
+        'field': [{
+          'text': {'Фотограф': 'Даша Глобина'},
+          'icon': '➝',
+          'link': 'https://www.instagram.com/dashoo.globe/'
+        }, {
+          'text': {'Cвет': 'Анна Кортюкова'},
+          'icon': '➝'
+        }]
+      },
+    ]
+  -
+    const slides2 = [
+      {
+        'title': 'Света Максимова',
+        'link': 'https://www.instagram.com/thesvetamaximova/'
+      }, {
+        'title': 'Вика Фомина',
+        'link': 'https://www.instagram.com/phomeena/'
+      }, {
+        'title': 'Евгения Савдеева',
+        'link': 'https://www.instagram.com/sleepingbythestyx/'
+      }, {
+        'title': 'Вика Фомина',
+        'link': 'https://www.instagram.com/phomeena/'
+      }, {
+        'title': 'Сандра Гуцати',
+        'link': 'https://www.instagram.com/sandragutsati/'
+      }, {
+        'title': 'Ксюша Хаматова',
+        'link': 'https://www.instagram.com/khamatovaphoto/'
+      }, {
+        'title': 'Вика Фомина',
+        'link': 'https://www.instagram.com/phomeena/'
+      }, {
+        'title': 'Света Максимова',
+        'link': 'https://www.instagram.com/thesvetamaximova/'
+      }, {
+        'title': 'Света Максимова',
+        'link': 'https://www.instagram.com/thesvetamaximova/'
+      }, {
+        'title': 'Вика Фомина',
+        'link': 'https://www.instagram.com/phomeena/'
+      }
+    ]
+
+block content
+  .background
+
+  section.grid
+    .container#hero(data-id="hero")
+      video-player.grid__full(basename="teaser" filter="orient" getimg="time=1")
+      //- noscript
+        video.grid__full(
+          autoplay
+          loop
+          muted
+          playsinline
+          width="1280"
+          height="720"
+          crossorigin)
+          source(src="./video/teaser.webm" type="video/webm")
+          source(src="./video/teaser.mp4" type="video/mp4")
+      article.flow.grid__start-half
+        h1.title(itemprop="name")
+          | Просвет
+        p(role="subtitle")
+          | Онлайн-курс предназначен для всех, кто хочет освоить навыки работы со студийным оборудованием и светом в минимальные сроки.
+        +cta({
+          type: 'anchor',
+          link: '#contact',
+          text: 'Подать заявку'
+        })(data-js-anim='bg-gradient')
+
+    .container(data-id="ticker")
+      +marquee({ iter: 4, text: '1 Месяц • 7 Занятий • 3 Съёмки •' })
+
+    .container#coach(data-id="coach")
+      +picture({
+        class: ['grid__start-half', 'svg-filter'],
+        src: 'coach',
+        alt: 'Анна Кортюкова',
+        width: 1024,
+      })
+      article.flow.grid__end-half
+        h2.headline
+          | Преподаватель
+        p
+          | Анна Кортюкова — фотограф, оператор, художник по свету. Работает на коммерческих проектах и сотрудничает с художниками. 12 лет преподаватель программ Школы Родченко. Автор и куратор программы
+          | «
+          +link({
+            href: 'https://mamm-edu.ru/courses/photoinmedia/',
+            text: 'Фотография в медиа'})
+          | ».
+          |
+          | Создатель журнала
+          |
+          +link({href: 'https://pluralmag.ru', text: 'Plural'})
+          | .
+
+    .container(data-id="ticker")
+      +marquee({
+        iter: 4,
+        text: 'Старт — 27 сентября • Стоимость — 10 000 ₽ •',
+        animDir: 'reverse',
+      })
+
+    .container#showreel(data-id="showreel")
+      .grid__asym-l.sideways
+        h2.headline
+          | Шоурил
+      .grid__asym-r.carousel.carousel--1
+        ul.carousel__container(
+          style=`--columns: ${count(slides1)};`
+          aria-labelledby="#ShowreelLabel"
+        )
+          each slide, i in slides1
+            li.carousel__slide(id=`slide${i+1}` style={'--columns': 2})
+              .carousel__image
+                +picture({
+                  imagePath: 'slides1',
+                  src: i+1,
+                  alt: '',
+                  width: 720,
+                  height: 1080
+                })
+              article.flow.carousel__text
+                if slide.title
+                  h3.headline
+                    | #{slide.title}
+                +list({ items: slide.field })
+        .carousel__counter
+          .carousel__counter-current.h2= 1
+          .carousel__counter-max.h6= count(slides1)
+        .carousel__control
+          button(aria-label="Предыдущий").prev
+            svg#prev(
+              viewBox="0 0 50 50"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2")
+              circle(fill="currentColor" cx="25" cy="25" r="20")
+              polyline#arrow(points="29,15 17,25 29,35")
+          button(aria-label="Следующий").next
+            svg#next(
+              viewBox="0 0 50 50"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2")
+              circle(fill="currentColor" cx="25" cy="25" r="20")
+              polyline#arrow(points="21,15 33,25 21,35")
+
+    .container.container--layered
+      .container.container--front(data-id="quote")
+        blockquote.h3.quote.grid__content
+          | «Мы не видим свет, мы видим объекты, на которые он падает. Как управлять светом, который не видно?
+          | Нужно смотреть на объекты, анализировать их и представлять траекторию движения, характер света»
+      .container.container--back(data-id="quote")
+        .video-wrapper.grid__end-half
+          video-player(basename="flowgardenz" getimg="time=1")
+          noscript
+            video#backstage1(
+              autoplay
+              disablePictureInPicture
+              loop
+              muted
+              playsinline
+              width="1080"
+              height="1920")
+              source(src="./video/flowgardenz.webm" type="video/webm")
+              source(src="./video/flowgardenz.mp4" type="video/mp4")
+        .video-wrapper.grid__start-half
+          video-player(basename="glass-and-water" getimg="time=1")
+          noscript
+            video#backstage2(
+              autoplay
+              disablePictureInPicture
+              loop
+              muted
+              playsinline
+              width="1080"
+              height="1920")
+              source(src="./video/glass-and-water.webm" type="video/webm")
+              source(src="./video/glass-and-water.mp4" type="video/mp4")
+        blockquote.h3.quote.grid__content
+          | «Мы не видим свет, мы видим объекты, на которые он падает. Как управлять светом, который не видно?
+          | Нужно смотреть на объекты, анализировать их и представлять траекторию движения, характер света»
+
+    .container#about(data-id="about")
+      .grid__asym-l.sideways.sticky
+        h2.headline
+          | Что будет на курсе?
+      article.flow.grid__asym-r
+        +list({
+          items: about,
+          ordered: true,
+          nestedListOrdered: false
+        })
+
+    .container#works(data-id="works")
+      .grid__asym-l.sideways
+        h2.headline
+          | Работы студентов
+      .grid__asym-r.carousel.carousel--2
+        ul.carousel__container(
+          style=`--columns: ${count(slides2)};`
+          aria-labelledby="#WorksLabel"
+        )
+          each slide, i in slides2
+            li.carousel__slide(id=`slide${i+1}` style={'--columns': 2})
+              .carousel__image
+                +picture({
+                  imagePath: 'slides2',
+                  src: i+1,
+                  alt: '',
+                  width: 720,
+                  height: 1080
+                })
+              article.flow.carousel__text
+                if slide.title
+                  h3.headline
+                    | #{slide.title}
+                  if slide.link
+                    +link({
+                      href: slide.link,
+                      icon: 'ig'
+                    })
+        .carousel__counter
+          .carousel__counter-current.h2= 1
+          .carousel__counter-max.h6= count(slides2)
+        .carousel__control
+          button(aria-label="Предыдущий").prev
+            svg#prev(
+              viewBox="0 0 50 50"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2")
+              circle(fill="currentColor" cx="25" cy="25" r="20")
+              polyline#arrow(points="29,15 17,25 29,35")
+          button(aria-label="Следующий").next
+            svg#next(
+              viewBox="0 0 50 50"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2")
+              circle(fill="currentColor" cx="25" cy="25" r="20")
+              polyline#arrow(points="21,15 33,25 21,35")
+
+    .container#upskill(data-id="upskill")
+      .grid__start-half
+        h2.headline
+          | Чему вы научитесь по итогам курса?
+      .grid__end-half
+        article.flow
+          +list({
+            items: upskill,
+            ordered: false
+          })
+          +cta({
+            type: 'anchor',
+            link: '#contact',
+            text: 'Записаться'
+          })(data-js-anim='bg-gradient')
+
+    .container#program(data-id="program")
+      .grid__asym-l.sideways.sticky
+        h2.headline
+          | Программа курса
+      article.flow.grid__asym-r
+        +list({
+          items: program,
+          ordered: true
+        })
+
+    .container#process(data-id="process")
+      .grid__start-half
+        h2.headline
+          | Как проходит обучение
+      .grid__end-half
+        p
+          | Занятия проходят в онлайн формате в вечернее время один или два раза в неделю: понедельник и четверг. Каждое занятие длится 3 часа. Все участники курса будут подключены в общий чат, где также можно задать вопрос преподавателю в рабочее время.
+
+    .container(data-id='reviews')#reviews
+      .grid__asym-l.sideways
+        h2.headline
+          | Отзывы студентов
+      .grid__asym-r.carousel.carousel--3
+        ul.carousel__container(
+          style=`--columns: ${count(reviews)};`
+          aria-labelledby="#ReviewsLabel"
+        )
+          each review, i in reviews
+            li.carousel__slide(id=`review${i+1}` style={'--columns': 1})
+              +review({
+                id: `review${i+1}`,
+                date: review.date,
+                stars: false,
+                title: review.title,
+                text: review.text,
+                link: review.user.link,
+                avatar: review.user.avatar,
+                username: review.user.name,
+                class: 'carousel__text',
+                collapsible: true,
+              })
+        .carousel__counter
+          .carousel__counter-current.h2= 1
+          .carousel__counter-max.h6= count(reviews)
+        .carousel__control
+          button(aria-label="Предыдущий").prev
+            svg#prev(
+              viewBox="0 0 50 50"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2")
+              circle(fill="currentColor" cx="25" cy="25" r="20")
+              polyline#arrow(points="29,15 17,25 29,35")
+          button(aria-label="Следующий").next
+            svg#next(
+              viewBox="0 0 50 50"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2")
+              circle(fill="currentColor" cx="25" cy="25" r="20")
+              polyline#arrow(points="21,15 33,25 21,35")
+
+    .container(data-id='contact')#contact
+      //- .form-wrapper.grid__center
+      +form({
+        class: 'grid__center',
+        endpoint: 'e146a372',
+        captcha: true,
+      })
+
+  //- include ./pug/_footer
+
+  include ./pug/_svg-filters
+
+block scripts

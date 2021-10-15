@@ -1,0 +1,75 @@
+append vars
+  -
+    const navItems = [
+      {
+        'title': 'Преподаватель',
+        'pathname': '#coach',
+      }, {
+        'title': 'Что будет на курсе',
+        'pathname': '#about',
+      }, {
+        'title': 'Чему вы научитесь',
+        'pathname': '#upskill',
+      }, {
+        'title': 'Программа курса',
+        'pathname': '#program',
+      }, {
+        'title': 'Как проходит обучение',
+        'pathname': '#process',
+      },
+    ];
+
+nav.nav#Nav
+  button.nav__toggle
+    | Меню
+    //- span.hamburger
+      svg(
+        viewBox="0 0 50 40"
+        height="100%"
+        role="presentation"
+        focusable="false"
+        aria-label="trigram for heaven symbol"
+      )
+        line(x1="5%" x2="95%" y1="20%" y2="20%")
+        line(x1="5%" x2="95%" y1="50%" y2="50%")
+        line(x1="5%" x2="95%" y1="80%" y2="80%")
+  ul.nav__items(aria-label="Main Menu")
+    each navItem, i in navItems
+      if navItem.subItems
+        li.nav__item(style={ '--zi': navItems.length - i })
+          a.nav__link(
+            id=`item0${i+1}`
+            href=`./${navItem.pathname}`
+          )
+            span.nav__link-text
+              | #{navItem.title}
+          button(
+            type="button"
+            id=`btnItem0${i+1}`
+            aria-controls=`SubItem0${i+1}`
+            aria-expanded="false"
+            aria-label="Show"
+            aria-labelledby=`btnItem0${i+1} item0${i+1}`
+            onclick="toggleSubNav(this.id);"
+          )
+            svg(
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"
+              role="img" aria-hidden="true"
+            )
+              path(d="M70.3 13.8L40 66.3 9.7 13.8z")
+          ul.nav__subitems.flow(id=`SubItem0${i+1}` style={'display': 'none'})
+            each subItem, i in navItem.subItems
+              li.nav__subitem
+                a.nav__link(
+                  href=`./${subItem.pathname}`
+                )
+                  span.nav__link-text
+                    | #{subItem.title}
+      else
+        li.nav__item(class={'selected': (i+1) === 4})
+          a.nav__link(
+            id=`item0${i+1}`
+            href=`./${navItem.pathname}`
+          )
+            span.nav__link-text
+              | #{navItem.title}

@@ -1,0 +1,134 @@
+//- https://alistapart.com/article/finessing-fecolormatrix/
+//- https://tympanus.net/codrops/2019/02/05/svg-filter-effects-duotone-images-with-fecomponenttransfer/
+//- https://yoksel.github.io/svg-gradient-map/#/
+
+- const toFractions = (val) => (val / 255).toFixed(9);
+
+svg(
+  viewBox="0 0 600 400"
+  width="0" height="0"
+  xmlns:xlink="http://www.w3.org/1999/xlink")
+  defs
+    filter#c1
+      feColorMatrix(in="SourceGraphic"
+        type="matrix"
+        values="1 1 0 0 0\
+                1 1 0 0 0\
+                1 1 0 1 0\
+                0 0 0 1 0")
+    filter#c2
+      feColorMatrix(in="SourceGraphic"
+        type="matrix"
+        values="1 1 1 -0.1 0\
+                0 0 0 0 0\
+                1 1 1 -0.1 0\
+                0 0 0 1 0")
+    filter#c3
+      feColorMatrix(in="SourceGraphic"
+        type="matrix"
+        values="1 0 0 0 0\
+                1 0 0 0 0\
+                1 0 1 0 0\
+                0 0 0 1 0")
+    filter#c4
+      feColorMatrix(in="SourceGraphic"
+        type="matrix"
+        values=".75 .75 .75 0 0\
+                1 1 1 0 0\
+                1 1 1 0 0\
+                0 0 0 1 0")
+    filter#c5
+      feColorMatrix(in="SourceGraphic"
+        type="matrix"
+        values=".75 .75 0 0 0\
+                .75 .75 0 0 0.6\
+                0 0 0 0 0.6\
+                0 0 0 1 0")
+    filter#c6
+      feColorMatrix(in="SourceGraphic"
+        type="matrix"
+        values="0.5 0.5 0 0 0.4\
+                0 0 0 0 0\
+                1 1 0 0 0.4\
+                0 -2 0 1 0"
+        result="color")
+    filter#no-g-magenta
+      feColorMatrix(
+        type="matrix"
+        values="1 1 0 0 0\
+                0 0 0 0 0\
+                0 1 1 0 0\
+                0 0 0 1 0")
+    filter#g-colorized-magenta
+      feColorMatrix(
+        type="matrix"
+        values="1 1 0 0 0\
+                0 1 0 0 0\
+                0 1 1 0 0\
+                0 0 0 1 0")
+    filter#blue-shadow-magenta-highlight
+      feColorMatrix(
+        type="matrix"
+        values="1 0 0 0 0\
+                0 0 0 0 0\
+                0 0 1 1 0\
+                0 0 0 1 0")
+
+    filter#duotone
+      //- Grayscale
+      feColorMatrix(
+        type="matrix"
+        values=".33 .33 .33 0 0\
+                .33 .33 .33 0 0\
+                .33 .33 .33 0 0\
+                0 0 0 1 0")
+      feComponentTransfer(color-interpolation-filters="sRGB")
+        -
+          let C1 = {R:78, G:0, B:142} // Purple C
+          //- let C2 = {R:214, G:37, B:152} // Pink C
+          let C2 = {R:249, G:56, B:34} // Bright Red C
+        -
+          let mapRange = {
+            'R': [C1.R, C2.R],
+            'G': [C1.G, C2.G],
+            'B': [C1.B, C2.B],
+          }
+        each val, key in mapRange
+          if key === 'R'
+            feFuncR(
+              type="table"
+              tableValues=`${toFractions(val[0])} ${toFractions(val[1])}`)
+          if key === 'G'
+            feFuncG(
+              type="table"
+              tableValues=`${toFractions(val[0])} ${toFractions(val[1])}`)
+          if key === 'B'
+            feFuncB(
+              type="table"
+              tableValues=`${toFractions(val[0])} ${toFractions(val[1])}`)
+      //- Contrast Tweak
+      //- feComponentTransfer(color-interpolation-filters="sRGB")
+        feFuncR(type="gamma" exponent="1.5" amplitude="1.5" offset="0")
+        feFuncG(type="gamma" exponent="1.5" amplitude="1.5" offset="0")
+        feFuncB(type="gamma" exponent="1.5" amplitude="1.5" offset="0")
+
+    filter#hueRotate
+      feColorMatrix(in="SourceGraphic" type="hueRotate" values="90" result="A")
+
+    filter#distort
+      feTurbulence(
+        type="turbulence"
+        baseFrequency="0.08"
+        numOctaves="2"
+        result="turbulence")
+      feDisplacementMap(
+        in2="turbulence"
+        in="SourceGraphic"
+        scale="50")
+
+    filter#noiseFilter
+      feTurbulence(
+        type='fractalNoise'
+        baseFrequency='0.65'
+        numOctaves='3'
+        stitchTiles='stitch')

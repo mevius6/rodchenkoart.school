@@ -1,0 +1,120 @@
+@use '../config';
+
+.review {
+  --flow-space: var(--spacer-4);
+  --avatar-size: 2.5rem; // 16–64px
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  block-size: 100%;
+  padding-inline: var(--spacer-7);
+
+  @include config.respond('tablet') {
+    // alignment to the centre of the grid column
+    padding-inline: 0 var(--gutter);
+  }
+
+  // border-radius: var(--spacer-2);
+  // box-shadow: 0 0 0 1px var(--accent) inset;
+
+  &__header {
+    margin-block-start: var(--spacer-2);
+  }
+
+  // &__header,
+  // &__content,
+  &__headline {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__footer,
+  &__author {
+    display: flex;
+    align-items: center;
+  }
+
+  &__footer {
+    flex-direction: column-reverse;
+    justify-content: center;
+
+    @include config.respond('tablet') {
+      flex-direction: row;
+    }
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+
+    &-avatar {
+      flex: 0 0 var(--avatar-size);
+
+      inline-size: var(--avatar-size);
+      block-size: var(--avatar-size);
+      overflow: hidden;
+      // background: var(--trn) no-repeat 50% / cover;
+      background-color: var(--background-a50);
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+
+      picture { @include config.aspect-ratio('1/1'); }
+
+      // img { filter: grayscale(100); }
+      img { filter: grayscale(25%) saturate(75%); }
+    }
+
+    &-name {
+      // @include config.line-clamp(1);
+      // max-width: 16ch;
+
+      display: inline-block;
+      margin-inline-start: var(--spacer-2);
+
+      [itemprop='name'] { color: var(--foreground-a80); }
+    }
+  }
+
+  &__cite {
+    display: inline-block;
+    margin-block-end: var(--spacer-3);
+    // opacity: 0.75;
+    font-style: normal;
+
+    @include config.respond('tablet') {
+      padding-inline-start: var(--spacer-2);
+      margin-block-end: unset;
+      margin-inline-start: var(--spacer-2);
+      border-inline-start: 1px solid var(--accent);
+    }
+  }
+
+  // &__lead,
+  &__body {
+    --flow-space: var(--spacer-3);
+
+    max-height: 150vh;
+    transition: max-height 300ms var(--ease-in-out-cubic);
+
+    span { display: block; }
+
+    &.collapse { --flow-space: 0; }
+  }
+
+  .collapse {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  [itemprop='reviewBody'] {
+    --flow-space: var(--spacer-4);
+    text-align: left;
+  }
+
+  &__content {
+    --flow-space: var(--spacer-4);
+    // padding-inline: var(--gutter);
+    margin-block-start: 0;
+  }
+}

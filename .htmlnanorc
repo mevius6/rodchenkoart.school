@@ -1,0 +1,22 @@
+{
+  "minifySvg": {
+    "plugins": [
+      {
+        "name": "preset-default",
+        "params": {
+          "overrides": {
+            "removeUnknownsAndDefaults": false ,
+            "removeUselessDefs": false,
+            "removeXMLNS": false,
+            "removeHiddenElems": false,
+            "removeViewBox": false,
+            "convertPathData": false,
+            "mergePaths": false,
+            "cleanupIDs": false,
+            "collapseGroups": false
+          }
+        }
+      }
+    ]
+  }
+}

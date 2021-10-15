@@ -1,0 +1,59 @@
+include ./mixins
+
+- const message = 'В вашем браузере необходимо включить JavaScript.'
+block vars
+
+doctype html
+html(class="no-js" dir="ltr" lang="ru")
+  head
+    include ./_meta
+    block resource-hint-links
+    include ./_fonts
+
+    //- link(
+    //-   rel="preload"
+    //-   href="./scss/splitting.css" as="style"
+    //-   onload="this.onload=null;this.rel='stylesheet'"
+    //- )
+    //- noscript: link(rel="stylesheet" href="./scss/splitting.css")
+
+    link(rel="stylesheet" type="text/css" href="./scss/main.scss")
+    script(defer type="module" src="./js/modules.js")
+
+    script(src="https://www.google.com/recaptcha/api.js?render=6LchYK0UAAAAAMRflt6o0V_1imaH5KDnH5XVjWjB&onload=initRecaptcha&render=explicit")
+    script(type="text/javascript").
+      var initRecaptcha = function() {
+        grecaptcha.ready(function() {
+          grecaptcha.execute("6LchYK0UAAAAAMRflt6o0V_1imaH5KDnH5XVjWjB", {action: "homepage"}).then(function(token) {
+            document.getElementById('recaptcha_token').value = token;
+          });
+        });
+      }
+
+    block head
+
+  body.page.page--loading(itemscope itemtype="https://schema.org/WebPage")
+    noscript: h2= message
+    include ./_header
+
+    main(
+      data-id= page.id
+      itemprop="mainEntity"
+      itemscope itemtype="https://schema.org/Course"
+      itemid= data.meta.domain
+    )
+      //- include ./_microdata
+      //- if page.id === 'index'
+        .a2hs.hidden
+          +cta({
+            base: 'a2hs',
+            type: 'button',
+            text: 'Установить'
+          })
+      block content
+
+    block scripts
+
+    prepend scripts
+      script(type="module" src="./js/index.js")
+      //- script(src="./a2hs.js")

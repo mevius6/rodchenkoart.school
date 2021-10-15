@@ -1,0 +1,114 @@
+@use '../config';
+
+// https://www.smashingmagazine.com/2019/10/editorial-design-patterns-css-grid-subgrid-naming/
+
+.grid {
+  display: grid;
+  grid-template-rows: minmax(min-content, 1fr);
+  grid-template-columns:
+    [full-start] minmax(0, 1fr)
+    [content-start start-half-start] minmax(0, 1fr)
+    [center-start] minmax(0, 2fr)
+    [start-half-end end-half-start] minmax(0, 2fr)
+    [center-end] minmax(0, 1fr)
+    [end-half-end content-end] minmax(0, 1fr)
+    [full-end];
+  // row-gap: var(--spacer-7);
+  overflow-x: hidden;
+  column-gap: var(--gutter);
+  contain: layout;
+
+  > * + * {
+    @include config.border-gradient(
+      135deg,
+      var(--accent),
+      var(--accent-shade)
+    );
+
+    padding-inline: var(--spacer-3);
+    @include config.respond('tablet') {
+      padding-inline: unset;
+    }
+  }
+
+  @for $i from 1 through 10 {
+    .container:nth-child(#{$i}) {
+      grid-row: $i;
+    }
+  }
+
+  &__full {
+    grid-column: full-start / full-end;
+    grid-column: full;
+  }
+
+  &__asym-l,
+  &__asym-r,
+  &__start-half,
+  &__end-half,
+  &__center,
+  &__content {
+    grid-column: full;
+  }
+
+  @include config.respond('tablet') {
+    // & { row-gap: var(--spacer-11); }
+
+    &__start-half {
+      grid-column: start-half-start / start-half-end;
+      grid-column: start-half;
+    }
+
+    &__end-half {
+      grid-column: end-half-start / end-half-end;
+      grid-column: end-half;
+    }
+
+    &__content {
+      display: grid;
+      grid-column: content-start / content-end;
+      grid-column: content;
+    }
+
+    &__center {
+      grid-column: center-start / center-end;
+      grid-column: center;
+    }
+
+    &__asym-l {
+      grid-column: 1 / span 2;
+    }
+
+    &__asym-r {
+      grid-column: 3 / span 4;
+    }
+  }
+
+  &--2cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: inherit;
+  }
+
+  &--3cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: inherit;
+  }
+
+  &--4cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: inherit;
+  }
+}
+
+@for $i from 1 through 4 {
+  [data-columns='#{$i}'] {
+    display: grid;
+
+    @include config.respond('tablet') {
+      grid-template-columns: repeat($i, 1fr);
+    }
+  }
+}

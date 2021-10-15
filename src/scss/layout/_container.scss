@@ -1,0 +1,307 @@
+@use '../config';
+
+// https://github.com/dbaron/container-queries-implementability#proposal
+// @container (max-width: 45em) {}
+
+main {
+  min-inline-size: 100%;
+  block-size: 100%;
+  contain: size;
+}
+
+section {
+  position: relative;
+  inline-size: 100vw;
+  min-block-size: 100vh;
+  // https://web.dev/content-visibility/
+  content-visibility: auto;
+}
+
+// Safari
+.background { z-index: -1; }
+
+.container {
+  --border-width: 1px 0 0;
+
+  position: relative;
+  display: grid;
+  row-gap: var(--spacer-3);
+  grid-template-columns: inherit;
+  grid-template-columns: subgrid;
+  grid-column: full;
+  column-gap: inherit;
+
+  &--layered {
+    min-block-size: 100vh;
+
+    > * {
+      grid-row: 1 !important; // override
+      pointer-events: none;
+    }
+  }
+
+  & > .container {
+    align-items: center;
+
+    > * { grid-row: 1; }
+
+    // &--front {}
+
+    &--back {
+      /* default gradient w/o smoothing
+      --mask:
+        radial-gradient(
+          circle at var(--x, 50%) var(--y, 50%),
+          hsl(0 0% 0%) 25%,
+          var(--trn) 0
+        ); */
+      // gradient w/ smoothing
+      // https://medium.com/pixel-and-ink/avoiding-jagged-edges-on-gradients-f485cc7401f5
+      --mask:
+        radial-gradient(
+          circle at var(--x, 69%) var(--y, 50%),
+          hsl(0 0% 0%) var(--maskSize1, 0%) 0,
+          hsl(0 0% 0% / 0.1) calc(var(--maskSize1, 0%) + 0.1%),
+          var(--trn) 0,
+          var(--trn) var(--maskSize2, 0%),
+          hsl(0 0% 0% / 0.1) calc(var(--maskSize2, 0%) + 0.1%),
+          hsl(0 0% 0%) var(--maskSize2, 0%),
+          hsl(0 0% 0% / 0.1) calc(var(--maskSize3, 0%) - 0.1%),
+          hsl(0 0% 0%) var(--maskSize3, 0%),
+          hsl(0 0% 0% / 0.1) calc(var(--maskSize3, 0%) + 0.1%),
+          var(--trn) 0
+        );
+      // set w/ GSAP
+      // --maskSize1: 20%;
+      // --maskSize2: 28%;
+      // --maskSize3: calc(28% + 0.1rem);
+      --grad-color1: hsl(var(--teal));
+
+      position: absolute;
+      inset: 0;
+      align-content: center;
+      overflow: hidden;
+      color: var(--foreground);
+      background-image:
+        radial-gradient(
+          circle at 50% 50%,
+          var(--grad-color1) 0%,
+          var(--grad-color2, var(--trn)) 100%,
+        );
+      background-attachment: fixed;
+      mask-image: var(--mask);
+
+      & > [class*='content'] {
+        color: hsl(0 0% 100%);
+        mix-blend-mode: difference;
+      }
+
+      video-player { pointer-events: none; }
+    }
+  }
+
+  &[data-id='hero'] {
+    align-items: center;
+    min-block-size: 100vh;
+
+    > * { grid-row: 1; }
+
+    video-player { z-index: -1; }
+
+    article {
+      --flow-space: var(--spacer-4);
+
+      padding-inline: var(--spacer-3);
+      color: hsl(var(--white));
+      text-align: left;
+
+      @include config.respond('tablet') {
+        padding-inline: unset;
+      }
+    }
+  }
+
+  &[data-id='ticker'] {
+    min-block-size: 4rem;
+    font-weight: 500;
+  }
+
+  &[data-id='coach'] {
+    align-items: center;
+
+    picture {
+      @include config.border-gradient(
+        90deg,
+        var(--accent),
+        var(--accent-shade)
+      );
+
+      --border-width: 1px;
+    }
+  }
+
+  &[data-id='quote'] {
+    .video-wrapper {
+      @include config.aspect-ratio('16/9');
+
+      &:nth-of-type(1) { display: none; }
+
+      @include config.respond('tablet') {
+        &:nth-of-type(1) { display: inline-block; }
+      }
+    }
+  }
+
+  // callouts w/ background grainy gradient
+  &[data-id='works'],
+  &[data-id='showreel'],
+  &[data-id='upskill'],
+  &[data-id='process'] {
+    // https://css-tricks.com/grainy-gradients/
+    --svg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 1920 1920' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    --alpha: 0.5;
+
+    // pseudo element for it b/c the filter drops on the photo, text, etc.
+    &::before {
+      position: absolute;
+      z-index: -1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      content: '';
+      background-image:
+        radial-gradient(
+          circle at 50% 50%,
+          var(--grad-color1) 0%,
+          var(--grad-color2, var(--trn)) 100%,
+        ),
+        var(--svg-noise);
+      filter: contrast(150%) brightness(100%);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  }
+
+  &[data-id='showreel'] {
+    --grad-color1: hsl(var(--blue) / var(--alpha));
+    --grad-color2: hsl(var(--teal) / var(--alpha));
+  }
+
+  &[data-id='works'] {
+    --grad-color1: hsl(var(--violet) / var(--alpha));
+    --grad-color2: hsl(var(--red) / var(--alpha));
+  }
+
+  &[data-id='upskill'] {
+    --grad-color1: hsl(var(--purple1) / var(--alpha));
+    --grad-color2: var(--background);
+
+    ul li { --list-offset: 0; }
+    a { --flow-space: var(--spacer-4); }
+  }
+
+  &[data-id='process'] {
+    --grad-color1: hsl(var(--teal) / var(--alpha));
+    --grad-color2: var(--background);
+  }
+
+  &[data-id='contact'] {
+    padding-block: var(--spacer-7);
+  }
+
+  // w/o inner wrap
+  &[data-id='coach'],
+  &[data-id='quote'],
+  &[data-id='upskill'],
+  &[data-id='process'] {
+    padding-block: var(--spacer-7);
+
+    @include config.respond('tablet') {
+      padding-block: var(--spacer-10);
+    }
+  }
+
+  &[data-id='about'],
+  &[data-id='program'],
+  &[data-id='reviews'] {
+    > article {
+      padding-block-end: var(--spacer-4);
+    }
+
+    .keyline {
+      &::before {
+        @include config.border-gradient(
+          -90deg,
+          var(--accent),
+          var(--accent-shade)
+        );
+      }
+
+      &::after {
+        @include config.border-gradient(
+          90deg,
+          var(--accent),
+          var(--accent-shade)
+        );
+      }
+    }
+  }
+
+  // w/ sticky title
+  @include config.respond('tablet') {
+    &[data-id='about'],
+    &[data-id='program'] {
+      display: grid;
+      max-block-size: 100vh;
+      overflow-x: hidden;
+      overflow-y: var(--overflow-y, hidden);
+      // overflow-y: scroll;
+      // overflow-scrolling: touch;
+
+      &[class*='scroller'] { --overflow-y: auto; }
+
+      > article {
+        padding-block: var(--spacer-7);
+      }
+
+      // for sticky pos
+      > .sideways {
+        // align-self: start;
+        min-block-size: 100vh;
+      }
+    }
+
+    &[data-id='about'] {
+      // divider b/w items
+      ol > * + * {
+        @include config.border-gradient(
+          90deg,
+          var(--accent),
+          var(--accent-shade)
+        );
+
+        --border-width: 1px 0 0;
+        padding-block-start: var(--spacer-3);
+      }
+    }
+  }
+}
+
+.sideways {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding-block-start: var(--spacer-4);
+
+  @include config.respond('tablet') {
+    --border-width: 0 1px 0;
+
+    justify-content: flex-end;
+    padding-block: var(--spacer-7);
+
+    border-color: var(--border-color, var(--accent-a80));
+    border-style: solid;
+    border-width: var(--border-width);
+  }
+}

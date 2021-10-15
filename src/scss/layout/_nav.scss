@@ -1,0 +1,233 @@
+@use '../config';
+
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+header,
+nav { width: auto; }
+
+.nav {
+  --offset: calc(100% + var(--spacer-1) / 2);
+
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &__toggle {
+    display: none;
+
+    @media (max-width: 480px) {
+      --size: 44px; // 2.75rem
+
+      display: block;
+      inline-size: var(--size);
+      block-size: var(--size);
+      color: var(--accent);
+      background-color: transparent;
+      appearance: none;
+    }
+  }
+
+  // ! override
+  ul,
+  li { gap: 0; }
+
+  a { word-break: normal; }
+
+  &__items {
+    display: flex;
+    flex-wrap: nowrap; // RWD
+    align-items: stretch;
+    justify-content: space-evenly;
+
+    @media (max-width: 480px) {
+      position: absolute;
+      top: var(--offset);
+      right: 0;
+      left: 0;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+
+      &.is-active {
+        visibility: visible;
+        opacity: 1;
+        transition: 300ms ease-out;
+      }
+    }
+  }
+
+  &__item {
+    --r: var(--radius-2);
+
+    position: relative;
+    z-index: var(--zi);
+    display: flex;
+    flex: 1 1 auto; // RWD
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1ch;
+    background-color: var(--background-a95);
+    opacity: var(--alpha, 0);
+    transition: opacity 150ms ease-in-out;
+
+    // :where(:not(:hover))
+    :hover > &:not(:hover) a { --alpha: 0.75; }
+
+    // &:first-child { border-radius: var(--r) var(--r) 0 0; }
+    // &:last-child { border-radius: 0 0 var(--r) var(--r); }
+
+    & > * { flex: 1 1 auto; }
+
+    & > a {
+      display: flex;
+      align-items: center;
+      inline-size: 100%;
+      block-size: 100%;
+      padding-inline: var(--spacer-1);
+      margin: auto;
+      line-height: 1.5;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1.25px;
+      opacity: var(--alpha, 1);
+    }
+
+    & > a + button svg {
+      inline-size: 100%;
+      block-size: 100%;
+      fill: var(--accent);
+      transition: transform 250ms ease-in;
+      transform-origin: center 45%;
+    }
+
+    & > button {
+      --size: 1rem;
+
+      display: flex;
+      flex: 0 0 var(--size);
+      align-items: center;
+      justify-content: center;
+      inline-size: var(--size);
+      block-size: var(--size);
+      padding: 0;
+      margin-inline-end: var(--spacer-1);
+      text-align: center;
+      background-color: transparent;
+      outline: none;
+
+      &[aria-expanded='true'] svg {
+        transform: rotate(180deg);
+        // transform: scale(-1);
+      }
+    }
+  }
+
+  &__link-text { margin-block: var(--spacer-1); }
+
+  &__subitems {
+    --flow-space: 0;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1020;
+    display: block;
+    width: 100%;
+    min-width: 12em;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 2px 8px hsl(var(--black) / 0.5));
+    border: 1px solid transparent;
+
+    a {
+      display: block;
+      padding: 1ch 2ex;
+      margin: 0;
+      font-size: 0.75rem;
+    }
+
+    span { margin: 0; }
+  }
+
+  &__subitem {
+    --r: var(--radius-1);
+    --speed: 200ms;
+    --delay: calc(var(--i, 0) * var(--speed));
+
+    background-color: hsl(var(--black) / 0.95);
+    opacity: 1;
+    transform: translate(0);
+    animation: fadeInBottom var(--speed) ease-out var(--delay) both;
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) { --i: #{$i * 0.25}; }
+    }
+
+    &:first-child { border-radius: var(--r) var(--r) 0 0; }
+    &:last-child { border-radius: 0 0 var(--r) var(--r); }
+  }
+
+  @include config.respond('tablet') {
+    &__items {
+      & > * + * {
+        // border-inline-start: 1px solid var(--foreground-a25);
+        border-inline-start: 1px solid var(--accent-a50);
+      }
+    }
+
+    &__item {
+      --alpha: 1;
+      background-color: var(--trn);
+
+      &:first-child,
+      &:last-child { --r: inherit; }
+    }
+
+    &__subitems {
+      top: var(--offset);
+      width: auto;
+    }
+  }
+
+  .hamburger {
+    --hue: 320;
+    display: flex;
+    place-items: center;
+
+    width: 100%;
+    height: auto;
+    padding: 0;
+    background:
+      conic-gradient(
+        hsl(var(--hue) 100% 95%),
+        hsl(200 100% 95%),
+        hsl(var(--hue) 100% 95%)
+      );
+    border: 1px solid hsl(var(--hue) 20% 80%);
+    border-radius: 50%;
+
+    svg > line {
+      stroke: hsl(var(--hue) 100% 60%);
+      stroke-width: 5px;
+      stroke-linecap: round;
+    }
+  }
+
+  @include config.respond('laptop') {
+    &__items {
+      flex-wrap: wrap; // RWD
+    }
+
+    &__item:last-child > ul {
+      right: 0;
+      left: auto;
+    }
+
+    &__subitems { right: 0; }
+  }
+}

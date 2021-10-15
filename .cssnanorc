@@ -1,0 +1,12 @@
+{
+  "preset": [
+    "default",
+    {
+      "mergeLonghand": false,
+      "calc": false,
+      "discardComments": {
+        "removeAll": true
+      }
+    }
+  ]
+}

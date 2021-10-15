@@ -1,0 +1,222 @@
+@use 'config';
+
+// Utility
+.wrapper {
+  position: relative;
+  max-width: var(--container-lg);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.sticky {
+  position: sticky;
+  top: var(--offset, 0);
+  z-index: 1;
+  align-self: start;
+}
+
+.scroller { overflow: auto; }
+
+.no-scroll { overflow: hidden; }
+
+.collapse {
+  max-height: 0 !important;
+  overflow: hidden;
+}
+
+.abs-centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.grid-centered {
+  display: grid;
+  place-content: center;
+  // place-items: center;
+}
+
+.full-width {
+  position: relative;
+  right: 50%;
+  left: 50%;
+  width: 100vw;
+  margin-right: -50vw;
+  margin-left: -50vw;
+}
+
+.full-bleed {
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+.flow > * + * {
+  margin-block-start: var(--flow-space, var(--spacer-3));
+}
+
+.bg-image {
+  overflow: hidden;
+  background-image: var(--bg-image);
+  background-repeat: no-repeat;
+  background-position: var(--bg-position, center);
+  background-size: cover;
+}
+
+.truncate-overflow {
+  @include config.line-clamp(3);
+  hyphens: manual;
+}
+
+// Decorations
+.elevated {
+  // @include config.smooth-shadow();
+}
+
+.text-gradient {
+  --color-stops: 2;
+  --color-hints: 1;
+
+  color: var(--trn);
+  background:
+    linear-gradient(
+      135deg,
+      var(--color1),
+      calc(100% - (100% / var(--color-stops) + 1) * var(--color-stops)),
+      var(--color2),
+    );
+  background-clip: text;
+
+  /* autoprefixer: ignore next */
+  -webkit-text-fill-color: transparent;
+  box-decoration-break: clone;
+}
+
+.border-gradient {
+  --offset: 5px;
+
+  &::before {
+    position: absolute;
+    top: calc(-1 * var(--offset));
+    left: calc(-1 * var(--offset));
+    z-index: 1;
+    width: calc(100% + var(--offset) * 2);
+    height: calc(100% + var(--offset) * 2);
+    content: '';
+    background:
+      linear-gradient(
+        130deg,
+        var(--accent),
+        var(--accent) 41.07%,
+        var(--accent-shade) 76.05%
+      );
+    border-radius: 12px;
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background: #000;
+    border-radius: 8px;
+  }
+
+  & > * { z-index: 3; }
+}
+
+.pattern-1 {
+  --color-stop1: var(--accent);
+  --color-stop2: var(--accent-shade);
+
+  background-image:
+    repeating-radial-gradient(
+      circle at 60%,
+      var(--color-stop1),
+      var(--color-stop1) 3px,
+      var(--trn) 4px,
+      var(--color-stop1) 5px
+    ),
+    repeating-radial-gradient(
+      circle at 45%,
+      var(--color-stop2),
+      var(--color-stop2) 3px,
+      var(--trn) 4px,
+      var(--color-stop2) 5px
+    );
+  background-size: 200%; // 100%
+}
+
+.pattern-2 {
+  --color-stop1: var(--accent-a50);
+  --color-stop2: var(--accent-a50);
+
+  background-image:
+    radial-gradient(var(--color-stop1) 15%, transparent 16%),
+    radial-gradient(var(--color-stop2) 15%, transparent 16%),
+    linear-gradient(
+      45deg,
+      transparent 48%,
+      var(--color-stop1) 48%,
+      var(--color-stop1) 52%,
+      transparent 52%
+    ),
+    linear-gradient(
+      -45deg,
+      var(--trn) 48%,
+      var(--color-stop2) 48%,
+      var(--color-stop2) 52%,
+      var(--trn) 52%
+    );
+  background-position: 0 0, 0.625rem 0.625rem, 0 0, 0 0;
+  background-size: 1.25rem 1.25rem, 1.25rem 1.25rem, 0.625rem 0.625rem, 0.625rem 0.625rem;
+}
+
+.pattern-3 {
+  --color-stop: var(--accent-a50);
+  // --color-stop: hsl(var(--purple) / 0.25);
+
+  // https://drafts.csswg.org/css-images/#repeating-gradients
+  background-image:
+    repeating-radial-gradient(
+      ellipse at right,
+      var(--color-stop) 10%,
+      var(--color-stop) 1px,
+      transparent 1px,
+      transparent 3px,
+      var(--color-stop) 3px,
+      var(--color-stop) 4px,
+      transparent 4px,
+      transparent 5px,
+      var(--color-stop) 5px,
+      var(--color-stop) 6px,
+      transparent 6px,
+      var(--color-stop) 6px,
+      var(--color-stop) 7px,
+      transparent 7px,
+      transparent 8px,
+      var(--color-stop) 8px,
+      var(--color-stop) 9px,
+      transparent 9px,
+      transparent 10px
+    );
+  background-size: 1.25rem 2.5rem;
+}
+
+.pattern-4 {
+  background-image:
+    repeating-radial-gradient(
+      var(--accent),
+      var(--accent) 2px,
+      var(--trn) 2px,
+      var(--trn) 4px
+    );
+}

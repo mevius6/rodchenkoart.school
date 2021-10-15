@@ -1,0 +1,95 @@
+@use '../config';
+
+// https://moderncss.dev/totally-custom-list-styles/
+ol,
+ul {
+  display: grid;
+  gap: var(--list-gap, var(--spacer-3));
+}
+
+li {
+  display: grid;
+  align-items: start;
+  // line-height: var(--list-item-lh, 1.25);
+  column-gap: calc(var(--list-icon-size) + var(--em-spacer-2));
+}
+
+ul {
+  --list-icon-size: 1.25em;
+
+  li::before { content: var(--attr); }
+
+  li[data-icon] {
+    --attr: attr(data-icon);
+
+    grid-template-columns: 0 1fr;
+    padding-inline-start: var(--list-offset, var(--em-spacer-1));
+
+    &::before {
+      font-size: var(--list-icon-size);
+      line-height: 1.1;
+    }
+  }
+}
+
+@include config.respond('tablet') {
+  ul {
+    --list-offset: var(--em-spacer-5);
+  }
+}
+
+ol {
+  --list-icon-size: 1.25em;
+
+  counter-reset: orderedlist;
+
+  & > li {
+    // grid-template-columns: minmax(var(--list-icon-size), min-content) 1fr;
+    grid-template-columns: minmax(var(--spacer-3), min-content) 1fr;
+    row-gap: var(--spacer-3);
+
+    // ::marker
+    &::before {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      inline-size: var(--list-icon-size);
+      block-size: var(--list-icon-size);
+      padding: var(--spacer-3);
+      // padding-block-start: 0.25rem;
+      font-size: var(--list-icon-size);
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--foreground-a80);
+      text-align: center;
+      content: counter(orderedlist);
+      counter-increment: orderedlist;
+      background-color: var(--li-bg, var(--trn));
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      font-feature-settings: 'tnum' 1;
+    }
+
+    ol,
+    ul,
+    h4,
+    p {
+      grid-column: 2 / -1;
+    }
+  }
+}
+
+@counter-style circled-nums {
+  system: cyclic;
+  symbolist: '①' '②' '③' '④' '⑤' '⑥' '⑦' '⑧' '⑨' '⓪';
+  suffix: '  ';
+}
+
+.list--circled-nums {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: 1.25rem;
+  font-weight: 300;
+  list-style-type: circled-nums;
+  gap: 0.5ch 3rem;
+}

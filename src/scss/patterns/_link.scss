@@ -1,0 +1,136 @@
+@use '../config';
+
+$icons: (vk, ig, tel, at);
+
+a {
+  position: relative;
+  // overflow: hidden;
+  cursor: pointer;
+
+  &:not(.logo, [data-js-anim='bg-gradient'], [aria-label='ig'])::before {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    pointer-events: none;
+    content: '';
+    background:
+      linear-gradient(
+        135deg,
+        hsl(var(--teal)),
+        33.333%,
+        var(--accent),
+      );
+    // background: var(--accent);
+    transition: transform 300ms;
+    // transition: transform 300ms;
+    transform: scale3d(var(--sx, 0), 1, 1);
+    transform-origin: var(--offset-x, 100%) 50%;
+  }
+
+  // &[aria-current='page']::before,
+  &:hover::before {
+    --sx: 1;
+    --offset-x: 0;
+  }
+
+  &[class='nav__link']::before {
+    --offset-x: 50%;
+  }
+
+  &:link,
+  &:visited {
+    &:not([class*='badge']) {
+      color: var(--link-text-color, var(--foreground));
+      transition: all 150ms ease-in-out;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &[aria-current='page'] {
+    // @include config.text-gradient(135deg, var(--accent-shade), var(--accent));
+
+    color: var(--link-text-color, var(--accent));
+    // text-shadow: 0 1px 1px hsl(var(--black) / 0.25);
+
+    &:not([class*='badge'], [class*='cta']) {
+      // text-shadow: none;
+      filter: brightness(120%);
+    }
+  }
+
+  &:focus-visible {
+    outline: var(--accent) dotted thin;
+    // outline-offset: 2px;
+  }
+
+  &[href*='://']:not(
+  [href^='#']
+  [class*='cta'],
+  [class*='logo'])::after {
+    @include config.typeset('sans', 400);
+
+    // font-family: inherit;
+    font-size: 0.75em;
+    content: var(--arrow, ' ↗');
+  }
+
+  &[download]::after { --arrow: ' ↓'; }
+
+  &[class*='cta'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    min-block-size: 44px;
+    padding: 1ch 2ex;
+    overflow: hidden;
+    cursor: pointer;
+    // background-color: var(--background);
+    border-radius: 2px;
+    // box-shadow: var(--accent) 0 0 0 1px inset;
+
+    &:is(:focus, :active) { transform: translateY(1px); }
+  }
+
+  &[data-js-anim='bg-gradient'] {
+    background:
+      linear-gradient(var(--background-a95), var(--background)) padding-box,
+      radial-gradient(
+        farthest-corner at var(--x, 50%) var(--y, 50%),
+        hsl(var(--teal)),
+        var(--accent-shade)
+      ) border-box;
+    border: 2px solid transparent;
+    appearance: none;
+  }
+
+  & > [data-icon] {
+    --icon-size: 1.25rem;
+
+    display: block;
+    inline-size: var(--icon-size);
+    block-size: var(--icon-size);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  @each $i in $icons {
+    > [data-icon=#{$i}] {
+      background-image: url('../images/#{$i}.svg');
+      // background-image: var(--#{$i});
+    }
+  }
+
+  &[aria-label='ig'] {
+    --arrow: '';
+    display: inline-block;
+  }
+
+  [role='list'] & {
+    justify-self: start;
+  }
+}

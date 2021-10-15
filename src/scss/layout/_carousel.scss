@@ -1,0 +1,198 @@
+@use '../config';
+
+.carousel {
+  $init: &;
+  $first: #{&}--1;
+  $second: #{&}--2;
+  $third: #{&}--3;
+
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow: hidden;
+
+  &__container {
+    --list-gap: 0;
+
+    position: relative;
+    display: flex;
+    min-block-size: 100%;
+    margin-inline: auto;
+  }
+
+  // Slide
+  &__slide {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    // align-self: center;
+    flex: 0 0 100%;
+    margin-block: auto;
+    grid-row-gap: var(--gutter);
+    content-visibility: auto;
+
+    #{$first} & {
+      margin-block-start: 0;
+    }
+
+    // #{$first} & { @include config.bg-images('slides1'); }
+    // #{$second} & { @include config.bg-images('slides2'); }
+  }
+
+  &__image {
+    padding-inline: 2.75rem;
+    padding-block-start: 1.75rem;
+    overflow: hidden;
+
+    picture { @include config.aspect-ratio('3/2'); }
+  }
+
+  &__text {
+    z-index: 1;
+    place-self: center;
+    padding-block: 2ch;
+    margin-inline: auto;
+    color: var(--foreground);
+    background-color: var(--trn);
+
+    #{$second} &,
+    #{$first} & {
+      padding-block: 0 var(--spacer-4);
+    }
+
+    #{$second} & {
+      display: flex;
+      flex-direction: column;
+
+      a { margin-inline: auto; }
+    }
+  }
+
+  // Next/Previous Slide Control
+  &__control {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    inline-size: 100%;
+    transform: translateY(-50%);
+    drop-shadow: 0 0 1px var(--foreground);
+
+    .next,
+    .prev {
+      // --full: 44px;
+      --full: 2.75rem;
+      --s: 1;
+
+      position: relative;
+      inline-size: var(--full);
+      block-size: var(--full);
+      // clip-path: var(--geometry);
+      padding: 0; // ! override
+      text-align: center;
+      cursor: pointer;
+      // background-color: hsl(var(--pink) / 0.75);
+      // background-color: hsl(var(--teal) / 0.75);
+      background-color: var(--trn);
+      border-radius: 0;
+      transition: transform 150ms var(--ease-in-out-quart);
+      transform: scale(var(--s));
+
+      /* &::before {
+        content: var(--arrow);
+        display: inline-flex;
+        position: absolute;
+        font-size: 3vmax;
+      } */
+
+      &:active { --s: 0.75; }
+
+      > svg { width: 100%; }
+      circle { color: var(--accent-a25); }
+    }
+
+    .next {
+      // --arrow: '\2192';
+      --geometry: polygon(0 0, 50% 0, 100% 50%, 50% 100%, 0 100%, 50% 50%);
+    }
+
+    .prev {
+      // --arrow: '\2190';
+      --geometry: polygon(100% 0, 50% 0, 0% 50%, 50% 100%, 100% 100%, 50% 50%);
+    }
+  }
+
+  &__counter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--foreground-a80);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+
+    // &-current { font-size: 6vmax; }
+    &-max {
+      position: relative;
+      // font-size: 2vmax;
+
+      &::before {
+        padding: 0 var(--spacer-2);
+        content: '/';
+      }
+    }
+  }
+
+  @include config.respond('tablet') {
+    &__slide {
+      display: grid; // override
+      grid-template-columns: repeat(var(--columns), 1fr);
+    }
+
+    &__image {
+      // --aspect-ratio: 3/2;
+      padding: unset;
+    }
+
+    &__text,
+    &__control,
+    &__counter {
+      padding-inline-end: var(--gutter);
+    }
+
+    &__text {
+      padding-block: var(--spacer-7);
+
+      #{$second} & {
+        a { margin-inline-start: unset; }
+      }
+    }
+
+    &__control {
+      top: unset;
+      right: 0;
+      bottom: 0;
+      left: unset;
+      width: unset;
+
+      > button:nth-child(2) { margin-inline-start: var(--spacer-3); }
+    }
+
+    &__counter {
+      margin-block-start: var(--spacer-7);
+
+      #{$second} &,
+      #{$first} & {
+        right: 0;
+        left: unset;
+      }
+    }
+  }
+}

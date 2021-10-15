@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "domain": "https://rodchenkoart.school",
+    "email": "connect@rodchenkoart.school",
+    "brand": "ПРОСВЕТ",
+    "name": "ПРОСВЕТ",
+    "keywords": "фотография,курс"
+  },
+  "pages": {
+    "index": {
+      "id": "index",
+      "path": "/",
+      "title": ["", ""],
+      "description": "Онлайн-курс «ПРОСВЕТ» предназначен для всех, кто хочет освоить навыки работы со студийным оборудованием и светом в минимальные сроки.",
+      "keywords": "курс по свету"
+    }
+  }
+}

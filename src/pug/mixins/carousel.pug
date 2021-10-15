@@ -1,0 +1,76 @@
+mixin carousel(props)
+  - let num = props.data.length
+  - let attrs = {}
+  - attrs.class = [props.name]
+
+  - let columns = props.slideCols
+  //- let path = 'images/' + props.imagePath
+
+  .carousel(class={'carousel--2cols': columns === 2})&attributes(attrs)
+    .carousel__container
+      each item, i in props.data
+        .carousel__slide(
+          class={'bg-image': columns === 1}
+          style={'--columns': columns}
+        )
+          if columns === 2
+            +picture({
+              imagePath: props.imagePath,
+              src: i+1,
+              alt: '',
+              width: 720,
+              height: 1080
+            })
+
+          article.carousel__text
+            h2.headline
+              | #{item.title}
+            if Array.isArray(item.field)
+              each subitem in item.field
+                if subitem.lead
+                  p.body
+                    | #{subitem.lead}
+                if subitem.listTitle
+                  +list({
+                    title: subitem.listTitle,
+                    items: subitem.listItems,
+                    ordered: false
+                  })
+                if subitem.listItems
+                  +list({
+                    items: subitem.listItems,
+                    ordered: false
+                  })
+                else
+                  p.body
+                    | #{subitem}
+            else
+              p.body
+                | #{item.field}
+                if item.link
+                  +link({ phone: item.link })(itemprop="telephone")
+
+    if props.count
+      .carousel__counter
+        .carousel__counter-current.num= 1
+        .carousel__counter-max= num
+    .carousel__control
+      //- &larr; &rarr;
+      button(aria-label="Предыдущий").prev
+        //- svg#prev(
+          viewBox="0 0 50 50"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#fff"
+          stroke-width="2")
+          circle(fill="rgba(170,170,170,0.24)" cx="25" cy="25" r="20")
+          polyline#arrow(points="29,15 17,25 29,35")
+      button(aria-label="Следующий").next
+        //- svg#next(
+          viewBox="0 0 50 50"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="#fff"
+          stroke-width="2")
+          circle(fill="rgba(170,170,170,0.24)" cx="25" cy="25" r="20")
+          polyline#arrow(points="21,15 33,25 21,35")

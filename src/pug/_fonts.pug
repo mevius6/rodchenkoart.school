@@ -1,0 +1,156 @@
+//- https://wicg.github.io/local-font-access/
+append vars
+  -
+    let pathName = 'fonts'
+    let typeName = 'font'
+    let fontFaces = [
+      {
+        'fullName': 'SuisseScreen-Monitor',
+        'varAxes': false
+      },
+      {
+        'fullName': 'SuisseScreen-MonitorItalic',
+        'varAxes': false
+      },
+      {
+        'fullName': 'SuisseScreen-Medium',
+        'varAxes': false
+      },
+      {
+        'fullName': 'SuisseScreen-MediumItalic',
+        'varAxes': false
+      },
+      {
+        'fullName': 'SuisseScreen-SemiBold',
+        'varAxes': false
+      },
+      {
+        'fullName': 'SuisseScreen-SemiBoldItalic',
+        'varAxes': false
+      },
+      //- {
+      //-   'fullName': 'SuisseScreen-Bold',
+      //-   'varAxes': false
+      //- },
+      //- {
+      //-   'fullName': 'SuisseScreen-BoldItalic',
+      //-   'varAxes': false
+      //- },
+    ]
+
+each fontFace in fontFaces
+  - let format = !fontFace.varAxes ? 'woff2' : 'woff2-variations'
+  link(
+    rel="preload"
+    href=`./${pathName}/${fontFace.fullName}.woff2` as=typeName
+    type=`${typeName}/${format}`
+    crossorigin
+  )
+
+//- https://drafts.csswg.org/css-fonts-4/#font-face-src-parsing
+style.
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: normal;
+    font-synthesis: none;
+    font-weight: 400;
+    src:
+      local(SuisseScreen Monitor),
+      local(SuisseScreen-Monitor),
+      url(./fonts/SuisseScreen-Monitor.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-Monitor.woff) format('woff');
+    }
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: italic;
+    font-synthesis: none;
+    font-weight: 400;
+    src:
+      local(SuisseScreen MonitorItalic),
+      local(SuisseScreen-MonitorItalic),
+      url(./fonts/SuisseScreen-MonitorItalic.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-MonitorItalic.woff) format('woff');
+    }
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: normal;
+    font-synthesis: none;
+    font-weight: 500;
+    src:
+      local(SuisseScreen Medium),
+      local(SuisseScreen-Medium),
+      url(./fonts/SuisseScreen-Medium.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-Medium.woff) format('woff');
+    }
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: italic;
+    font-synthesis: none;
+    font-weight: 500;
+    src:
+      local(SuisseScreen MediumItalic),
+      local(SuisseScreen-MediumItalic),
+      url(./fonts/SuisseScreen-MediumItalic.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-MediumItalic.woff) format('woff');
+    }
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: normal;
+    font-synthesis: none;
+    font-weight: 600;
+    src:
+      local(SuisseScreen SemiBold),
+      local(SuisseScreen-SemiBold),
+      url(./fonts/SuisseScreen-SemiBold.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-SemiBold.woff) format('woff');
+    }
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: italic;
+    font-synthesis: none;
+    font-weight: 600;
+    src:
+      local(SuisseScreen SemiBoldItalic),
+      local(SuisseScreen-SemiBoldItalic),
+      url(./fonts/SuisseScreen-SemiBoldItalic.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-SemiBoldItalic.woff) format('woff');
+    }
+//-
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: normal;
+    font-synthesis: none;
+    font-weight: 700;
+    src:
+      local(SuisseScreen Bold),
+      local(SuisseScreen-Bold),
+      url(./fonts/SuisseScreen-Bold.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-Bold.woff) format('woff');
+    }
+  @font-face {
+    font-display: swap;
+    font-family: SuisseScreen;
+    font-stretch: 100%;
+    font-style: italic;
+    font-synthesis: none;
+    font-weight: 700;
+    src:
+      local(SuisseScreen BoldItalic),
+      local(SuisseScreen-BoldItalic),
+      url(./fonts/SuisseScreen-BoldItalic.woff2) format('woff2'),
+      url(./fonts/SuisseScreen-BoldItalic.woff) format('woff');
+    }

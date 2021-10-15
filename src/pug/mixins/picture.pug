@@ -1,0 +1,19 @@
+mixin picture(props)
+  - let classes = []
+  - let path = './images/' + (props.imagePath ? props.imagePath : '')
+  //- - let subtypes = ['avif', 'webp', 'jpeg'];
+  - let subtypes = ['webp'];
+  - let format = props.format || 'jpg'
+
+  picture.image-wrapper(
+    class=classes class=[props.class]
+    style=`--bg-image: url(${path}/${props.src}.${format})`
+  )
+    each subtype of subtypes
+      source(type=`image/${subtype}` srcset=`${path}/${props.src}.${subtype}`)
+    img(
+      src=`${path}/${props.src}.${format}`
+      alt= props.alt title= props.title || props.alt
+      width= props.width height= props.height || props.width
+      loading="lazy"
+      decoding="async")

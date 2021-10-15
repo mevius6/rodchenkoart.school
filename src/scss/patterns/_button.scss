@@ -1,0 +1,61 @@
+@use '../config';
+
+// https://github.com/primer/css/blob/master/src/buttons/button.scss
+
+button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-around;
+  min-block-size: 44px; // 2.75rem
+  padding: 1ch 2ex; // 0.5rem
+  // padding-block: 0.25em;
+  overflow: hidden;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--btn-text-color, var(--foreground));
+  background: var(--btn-background, var(--background));
+  border-radius: 2px;
+
+  &:not([class*='prev'], [class*='next'], [disabled]) {
+    box-shadow: 0 8px 24px var(--shadow);
+    transition: transform 150ms ease-in-out, box-shadow 150ms ease-in-out;
+  }
+
+  &:is(:hover, :focus) {
+    text-decoration: none;
+    outline: none;
+  }
+
+  &:active:not([disabled], [role='tab'], [class*='prev'], [class*='next']) {
+    box-shadow: 0 0 0 var(--shadow);
+    transform: translateY(1px);
+  }
+
+  &[disabled] {
+    background-image:
+      repeating-linear-gradient(
+        -24deg,
+        var(--trn),
+        var(--trn) 4px,
+        var(--accent) 0,
+        var(--accent) 5px
+      );
+    box-shadow: 0 0 0 var(--shadow);
+  }
+
+  &[data-js-anim='bg-gradient'] {
+    --btn-background:
+      linear-gradient(var(--background-a95), var(--background)) padding-box,
+      radial-gradient(
+        farthest-corner at var(--x, 50%) var(--y, 50%),
+        hsl(var(--teal)),
+        var(--accent-shade)
+      ) border-box;
+    appearance: none;
+    border: 2px solid transparent;
+  }
+
+  // &[class*='prev']
+  // &[class*='next'] {}
+}

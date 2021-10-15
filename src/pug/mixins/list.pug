@@ -1,0 +1,99 @@
+-
+  const isObject = (obj) => Object.prototype.toString
+    .call(obj) === '[object Object]';
+
+mixin items(arr)
+  - let num = arr.length
+  each item, i in arr
+    if item.phone || item.email || item.href
+      li
+        +link({
+          base: 'list',
+          phone: item.phone,
+          email: item.email,
+          href: item.href,
+          icon: item.icon,
+          text: item.text,
+          prop: item.prop
+        })
+    else if item.cost
+      -
+        const currency = new Intl.NumberFormat('ru', {
+          style: 'currency',
+          currency: 'RUB',
+          currencyDisplay: 'narrowSymbol', // symbol
+          maximumSignificantDigits: 3
+        })
+      li.price
+        | #{item.text}
+        | #[br]
+        if typeof item.cost !== 'number'
+          | #{currency.format(item.cost[0])} / #{currency.format(item.cost[1])}
+        else
+          | #{currency.format(item.cost)}
+    else
+      if item.icon
+        //- example
+          'field': [{
+            'text': {'key': 'val'},
+            'icon': '➝'
+          }]
+        if item.link
+          li&attributes({'data-icon': item.icon})
+            if isObject(item.text)
+              each val, key in item.text
+                p.body
+                  | #[strong= key]:
+                  |
+                  +link({
+                    base: 'list',
+                    href: item.link,
+                    text: val,
+                  })
+            else
+              +link({
+                base: 'list',
+                href: item.link,
+                text: item.text,
+              })
+        else
+          li&attributes({'data-icon': item.icon})
+            if isObject(item.text)
+              each val, key in item.text
+                p.body
+                  | #[strong= key]: #{val}
+            else
+              | #{item.text}
+      else
+        li
+          | #{item.text}
+          if item.listItems
+            +list({
+              title: item.listTitle,
+              items: item.listItems,
+              ordered: nestedListOrdered ? true : false,
+              date: item.date
+            })
+          else
+            if item.date
+              time.date.keyline(datetime= item.date)= item.date
+            if item.title
+              h4.subhead= item.title
+
+mixin list(props)
+  if props.date
+    time.date.keyline(datetime= props.date)= props.date
+  if props.title
+    h4.subhead= props.title
+  if props.ordered
+    ol.list(
+      role="list"
+      reversed= props.reversed
+      start= props.start
+      type= props.type
+    )
+      +items(props.items)
+  else
+    - let classes = []
+    ul.list(role="list" class=classes class=[props.class])
+      +items(props.items)

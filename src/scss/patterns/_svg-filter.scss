@@ -1,0 +1,34 @@
+.svg-filter {
+  --duration: 500ms;
+  --easing: var(--ease-out-quart);
+  // --filter: url('#c6');
+  // --filter: url('#no-g-magenta');
+  // --filter: url('#g-colorized-magenta');
+  // --filter: url('#distort');
+  --filter: url('#duotone');
+
+  position: relative;
+  overflow: hidden;
+  background-color: var(--trn);
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    display: block;
+    content: '';
+    background: var(--bg-image) 50% 50% / cover no-repeat;
+    filter: var(--filter);
+    opacity: var(--alpha, 1);
+    transition: opacity var(--duration) var(--easing);
+  }
+
+  img {
+    opacity: var(--alpha, 0);
+    transition: opacity var(--duration) var(--easing);
+  }
+
+  &:hover {
+    &::after { --alpha: 0; }
+    & > img { --alpha: 1; }
+  }
+}

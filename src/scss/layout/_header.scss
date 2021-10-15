@@ -1,0 +1,46 @@
+@use '../config';
+
+.page__header {
+  // --offset: calc(var(--gutter) / 2);
+
+  position: fixed;
+  // top: var(--offset, 0);
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  z-index: 1010;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  // max-inline-size: calc(100vw - var(--gutter) * 2);
+  block-size: min-content; // <= 60px
+  background-color: var(--background-a95);
+  box-shadow: 0 10px 20px var(--shadow);
+  transition:
+    transform 500ms var(--ease-out-cubic),
+    opacity 500ms var(--ease-out-cubic);
+  transform: translateX(-50%);
+
+  &--hidden {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition:
+      transform 500ms var(--ease-out-cubic),
+      opacity 500ms var(--ease-in-cubic);
+    // transform: translate(-50%, calc(-100% - var(--offset)));
+    transform: translate(-50%, -100%);
+  }
+
+  > ul {
+    grid-template-columns: 1fr auto;
+    place-items: center;
+    column-gap: var(--spacer-3);
+  }
+
+  > .logo {
+    display: flex;
+    flex-flow: column;
+    inline-size: calc(2rem + 0.25vw);
+    margin: 1ch;
+  }
+}
