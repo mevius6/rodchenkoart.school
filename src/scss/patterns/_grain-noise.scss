@@ -62,10 +62,11 @@
     height: 300%;
     content: '';
     background-image: url(../images/noise.png);
-    opacity: 0.6;
+    opacity: var(--a, 0.6);
     animation: grain 8s steps(10) infinite;
 
     [data-theme-style='dark'] & {
+      --a: 0.5;
       filter: invert(100);
     }
   }
